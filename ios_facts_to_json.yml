@@ -1,0 +1,8 @@
+- hosts: PSwitches, PESwitches
+  connection: local
+  vars:
+  tasks:
+    - name: ssh facts
+      register: iosfacts_out
+      ios_facts:
+    - copy: content="{{ iosfacts_out | to_nice_json }}" dest="out/{{inventory_hostname}}_iosfacts.json"
