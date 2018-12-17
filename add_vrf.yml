@@ -1,4 +1,21 @@
 - hosts: PSwitches, PESwitches
   connection: local
   tasks:
-    - name: 
+  # - name: remove vrf if already existing
+  #   ios_vrf:
+  #     name: myVRF
+  #     state: absent
+  - name: create new vrf
+    ios_vrf:
+      name: myVRF
+      rd: 10.9.9.9:123
+      route_import:
+        - "456:1"
+      route_export:
+        - "456:1"
+  - name: create vrf bgp redistribution
+    ios_config:
+      parents: router bgp 65000
+      lines:
+        - address-family ipv4 vrf myVRF
+        - redistribute connected
