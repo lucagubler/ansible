@@ -2,3 +2,16 @@
   connection: local
   vars:
   tasks:
+    - name: write running config
+      ios_command:
+        commands: copy running-config startup-config
+    - name: show vlan list
+      register: vlan_out
+      ios_command:
+        commands: show vlan brief
+    - copy: content="{{ vlan_out | to_nice_json }}" dest="out/{{inventory_hostname}}_vlan.json"
+    - name: show routing table
+      register: routing_out
+      ios_command:
+        commands: show ip route
+    - copy: content="{{ routing_out | to_nice_json }}" dest="out/{{inventory_hostname}}_routing.json"
