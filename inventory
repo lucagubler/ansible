@@ -1,0 +1,4 @@
+[PSwitches]
+sw0[1:2]-pod-5.lab.ins.hsr.ch
+[PESwitches]
+sw0[3:4]-pod-5.lab.ins.hsr.ch
