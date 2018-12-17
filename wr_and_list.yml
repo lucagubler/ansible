@@ -8,6 +8,7 @@
       register: vlan_out
       ios_command:
         commands: show vlan brief
+      # TODO: Case for showing vlans on routers
     - copy: content="{{ vlan_out | to_nice_json }}" dest="out/{{inventory_hostname}}_vlan.json"
     - name: show routing table
       register: routing_out
