@@ -1,6 +1,5 @@
 - hosts: PSwitches, PESwitches
   connection: local
-  vars:
   tasks:
     - name: write running config
       ios_command:
@@ -15,3 +14,15 @@
       ios_command:
         commands: show ip route
     - copy: content="{{ routing_out | to_nice_json }}" dest="out/{{inventory_hostname}}_routing.json"
+- name: Push git commits with local variables.
+  hosts: localhost
+  vars:
+    username: git_username
+    password: git_password
+    repo: git_repo
+  tasks:
+    - name: Set origin to include username and password.
+      shell: "git remote set-url origin https://{{ git_username }}:{{ git_password }}@{{ git_repo }}"
+
+    - name: Push to origin.
+      shell: "git push origin branch"

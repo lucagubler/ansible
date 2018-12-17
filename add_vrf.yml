@@ -1,0 +1,4 @@
+- hosts: PSwitches, PESwitches
+  connection: local
+  tasks:
+    - name: 
