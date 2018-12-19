@@ -8,19 +8,34 @@
       register: vlan_out
       ios_command:
         commands: show vlan brief
-      # TODO: Case for showing vlans on routers
-    - copy: content="{{ vlan_out | to_nice_json }}" dest="out/{{inventory_hostname}}_vlan.json"
+    - copy: content="{{ vlan_out | to_nice_json }}" dest="out/switch_{{inventory_hostname}}_vlan.json"
     - name: show routing table
       register: routing_out
       ios_command:
         commands: show ip route
-    - copy: content="{{ routing_out | to_nice_json }}" dest="out/{{inventory_hostname}}_routing.json"
+    - copy: content="{{ routing_out | to_nice_json }}" dest="out/switch_{{inventory_hostname}}_routing.json"
+- hosts: PSwitches, PESwitches
+  connection: local
+  tasks:
+    - name: write running config
+      ios_command:
+        commands: copy running-config startup-config
+    - name: show vlan list
+      register: vlan_out
+      ios_command:
+        commands: show vlans
+    - copy: content="{{ vlan_out | to_nice_json }}" dest="out/router_{{inventory_hostname}}_vlan.json"
+    - name: show routing table
+      register: routing_out
+      ios_command:
+        commands: show ip route
+    - copy: content="{{ routing_out | to_nice_json }}" dest="out/router_{{inventory_hostname}}_routing.json"
 - name: Push git commits with local variables.
   hosts: localhost
   vars:
-    username: git_username
-    password: git_password
-    repo: git_repo
+    git_username: "user"
+    git_password: "password"
+    git_repo: "https://github.com/user/repo.git"
   tasks:
     - name: Set origin to include username and password.
       shell: git remote set-url origin https://{{ git_username }}:{{ git_password }}@{{ git_repo }}
