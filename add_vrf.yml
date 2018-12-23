@@ -1,21 +1,17 @@
-- hosts: PSwitches, PESwitches, Routers
+- hosts: PSwitches, PESwitches
   connection: local
-  vars:
-    vrf_name: myVRF
-    route_target: "456:1"
-    route_distinguisher: 10.9.9.9:123
   tasks:
-  - name: create new vrf
+  - name: create new vrf on switches
     ios_vrf:
-      name: "{{ vrf_name }}"
-      rd: "{{ route_distinguisher }}"
+      name: myVRF
+      rd: 10.9.9.9:123
       route_import:
-        - "{{ route_target }}"
+        - "456:1"
       route_export:
-        - "{{ route_target }}"
+        - "456:1"
   - name: create vrf bgp redistribution
     ios_config:
       parents: router bgp 65000
       lines:
-        - "address-family ipv4 vrf {{ vrf_name }}"
-        - "redistribute connected"
+        - address-family ipv4 vrf myVRF
+        - redistribute connected
