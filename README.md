@@ -15,6 +15,7 @@ Also, it commits the folder to the given git repository.
 | git_username   | username of the user which should used for git |
 | git_password   | password for the given git_user |
 | git_repo       | the path to the git repository the files should be pushed to |
+| git_branch     | the branch it should pushed to |
 
 Disclaimer: Output parsing from json to more human readable console output is not possible.
 
