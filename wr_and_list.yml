@@ -36,10 +36,11 @@
     git_username: "user"
     git_password: "password"
     git_repo: "https://github.com/user/repo.git"
+    git_branch: "branch"
   tasks:
     - name: Set origin to include username and password.
       shell: git remote set-url origin https://{{ git_username }}:{{ git_password }}@{{ git_repo }}
     - name: Commit
       shell: git commit -m "Add new VLAN and routing table snapshot"
     - name: Push to origin.
-      shell: git push origin branch
+      shell: git push origin {{ git_branch }}
