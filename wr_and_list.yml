@@ -14,7 +14,7 @@
       ios_command:
         commands: show ip route
     - copy: content="{{ routing_out | to_nice_json }}" dest="out/switch_{{inventory_hostname}}_routing.json"
-- hosts: PSwitches, PESwitches
+- hosts: Routers
   connection: local
   tasks:
     - name: write running config
